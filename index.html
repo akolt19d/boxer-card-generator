@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body onload="loadCards()">
+    <div id="wrapper">
+        <input type="checkbox" id="menuToggle">
+        <form action="index.html">
+            Name: <input type="text" id="name" required>
+            Surname: <input type="text" id="surname" required>
+            Nation: <input type="text" id="nation" required>
+            Image: <input type="text" id="image" required>
+            Stats: <input type="text" id="stats" required>
+            Retro: <input type="checkbox" id="retro">
+            <button type="submit">Generate</button>
+            <button id="toggle" type="button" onclick="toggleMenu()">
+                <p><</p>
+            </button>
+        </form>
+    </div>
+    <script src="images/generator/vanilla-tilt.min.js"></script>
+    <script src="canvas.js"></script>
+</body>
+</html>
