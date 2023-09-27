@@ -11,18 +11,18 @@ class Boxer {
 }
 
 let boxers = [
-    new Boxer("Anthony", "Joshua", "england", "https://boxinggu.ru/wp-content/uploads/2016/12/E%60ntoni-Dzhoshua.png", [92, 87, 86]),
-    new Boxer("Lennox", "Lewis", "england", "https://www.thesportsdb.com/images/media/player/cutout/2myhe81611486474.png", [95, 87, 92], true),
-    new Boxer("Viddal", "Riley", "england", "riley", [80, 82, 77]),
+    new Boxer("Anthony", "Joshua", "gb", "https://www.matchroomboxing.com/app/uploads/2020/06/AJ-ProfilePic-.png", [92, 88, 87]),
+    new Boxer("Lennox", "Lewis", "gb", "https://www.thesportsdb.com/images/media/player/cutout/2myhe81611486474.png", [95, 87, 92], true),
+    new Boxer("Viddal", "Riley", "gb", "riley", [80, 82, 77]),
     new Boxer("Dimitry", "Bivol", "ru", "bivol", [90, 89, 89]),
-    new Boxer("Ilunga", "Makabu", "COD", "makabu", [92, 88, 89]),
-    new Boxer("Gennady", "Golovkin", "KZ", "https://media-s3-us-east-1.ceros.com/bwin/images/2022/08/23/e8da0cae4b33a03b235cafb3488d0314/image.png", [92, 90, 88]),
-    new Boxer("Manny", "Pacquiao", "PH", "pacquiao", [88, 94, 86]),
-    new Boxer("Oleksandr", "Usyk", "ukraine", "usyk", [89, 93, 90]),
-    new Boxer("Canelo", "Alvarez", "mexico", "canelo", [93, 91, 93]),
-    new Boxer("Muhammad", "Ali", "usa", "ali", [96, 98, 94], retro),
-    new Boxer("Floyd", "Mayweather Jr", "usa", "https://www.wbaboxing.com/wp-content/uploads/2012/09/floydmayweather-jr.png", [88, 92, 98]),
-    new Boxer("Mike", "Tyson", "usa", "https://www.nicepng.com/png/full/161-1612774_we-have-collaborated-with-boxing-dvd-mike-tyson.png", [96, 90, 94], true)
+    new Boxer("Ilunga", "Makabu", "cd", "makabu", [90, 88, 87]),
+    new Boxer("Gennady", "Golovkin", "kz", "https://media-s3-us-east-1.ceros.com/bwin/images/2022/08/23/e8da0cae4b33a03b235cafb3488d0314/image.png", [92, 90, 88]),
+    new Boxer("Manny", "Pacquiao", "ph", "pacquiao", [94, 96, 90], true),
+    new Boxer("Oleksandr", "Usyk", "ua", "usyk", [89, 93, 90]),
+    new Boxer("Canelo", "Alvarez", "mx", "canelo", [93, 91, 93]),
+    new Boxer("Muhammad", "Ali", "us", "ali", [97, 99, 95], true),
+    new Boxer("Floyd", "Mayweather Jr", "us", "https://www.wbaboxing.com/wp-content/uploads/2012/09/floydmayweather-jr.png", [95, 97, 99], true),
+    new Boxer("Mike", "Tyson", "us", "https://www.nicepng.com/png/full/161-1612774_we-have-collaborated-with-boxing-dvd-mike-tyson.png", [97, 92, 94], true)
 ].sort((a, b) => 0.5 - Math.random())
 
 function checkRange(start, end, value)
@@ -32,7 +32,6 @@ function checkRange(start, end, value)
 
 function drawCard(boxer, canvas) 
 {
-    // const canvas = document.getElementById('card');
     const ctx = canvas.getContext('2d');
     const base = new Image();
     const border = new Image();
@@ -41,7 +40,7 @@ function drawCard(boxer, canvas)
     const flag = new Image();
     const nameGradient = new Image();
     const boxerImage = new Image();
-    const flagSrc = `https://countryflagsapi.com/png/${boxer.nation}`
+    const flagSrc = `https://flagcdn.com/h240/${boxer.nation}.png`
     const boxerImageSrc = boxer.image.slice(0, 4) == "http" ? boxer.image : `images/${boxer.image}.png`
     const overall = Math.floor((boxer.stats.reduce((a,b) => a+b)) / 3)
 
@@ -87,51 +86,40 @@ function drawCard(boxer, canvas)
     
     base.onload = () => {
         ctx.drawImage(base, 0, 0)
-        // console.log("Base loaded!")
     }
     base.src = "images/generator/base.png";
 
     flag.onload = () => {
-        // console.log("Flag loaded!")
         flagTexture.onload = () => {
-            // ctx.toggleSmoothing(false)
-            // if(boxer.retro) 
-            //     ctx.filter = "sepia(100%)"
             ctx.filter = boxer.retro ? "sepia(100%)" : "saturate(75%) contrast(75%)";
             let width = flag.height * .8
             ctx.drawImage(flag, (flag.width - width) / 2 - 5, 0, width, flag.height, horPadding, vertPadding, trueWidth, trueHeight)
-            // ctx.toggleSmoothing(true)
             ctx.filter = "none"
             ctx.globalCompositeOperation='multiply';
             ctx.drawImage(flagTexture, 0, 0)
-            // console.log("Flag texture loaded!")
             ctx.globalCompositeOperation='source-over';
         }
         flagTexture.src = "images/generator/flag-texture.png";
 
         boxerImage.onload = () => {
             nameGradient.onload = () => {
-                // console.log("Boxer loaded!")
                 let ratio = boxerImage.width / boxerImage.height
                 ctx.globalCompositeOperation = 'source-atop';
                 ctx.filter = boxer.retro ? "drop-shadow(1px -1px 3px rgb(0, 0, 0)) sepia(100%)" : "drop-shadow(1px -1px 3px rgba(0, 0, 0, 1)) saturate(85%) contrast(85%)"
                 ctx.drawImage(boxerImage, (-(ratio * trueHeight - trueWidth) / 2) + 100, vertPadding + 15, ratio * trueHeight, trueHeight - 15)
                 ctx.filter = "none"
                 ctx.globalCompositeOperation='source-over';
-                // console.log("Name gradient loaded!")
                 ctx.drawImage(nameGradient, 0, 0)
             }
             nameGradient.src = "images/generator/name-gradient.png";
     
             border.onload = () => {
-                // console.log("Border loaded!")
                 ctx.drawImage(border, 0, 0)
             }
             border.src = "images/generator/border.png";
         
             rim.onload = () => {
                 ctx.filter = rarityFilter;
-                // console.log("Rim loaded!")
                 ctx.drawImage(rim, 0, 0)
                 ctx.filter = "none"
 
@@ -141,10 +129,6 @@ function drawCard(boxer, canvas)
                 ctx.fillStyle = "white"
                 ctx.textAlign = "center"
                 ctx.fillText(boxer.name.toUpperCase(), 200, 390, trueWidth - 32)
-
-                // let grd = ctx.createRadialGradient(200, 430, 25, 20, 430, 60);
-                // grd.addColorStop(0, "rgb(225, 213, 97)");
-                // grd.addColorStop(1, "rgb(181, 162, 0)");
     
                 ctx.font = "42px Archivo Black";
                 ctx.fillStyle = "rgb(181, 162, 0)";
